@@ -1,0 +1,15 @@
+com\skillnez\tennis_scoreboard\dto\PlayerResponseDto.class
+com\skillnez\tennis_scoreboard\entity\BaseEntity.class
+com\skillnez\tennis_scoreboard\mapper\PlayerMapperImpl.class
+com\skillnez\tennis_scoreboard\entity\Player$PlayerBuilder.class
+com\skillnez\tennis_scoreboard\entity\Match.class
+com\skillnez\tennis_scoreboard\HelloServlet.class
+com\skillnez\tennis_scoreboard\service\PlayerService.class
+com\skillnez\tennis_scoreboard\dao\MatchRepository.class
+com\skillnez\tennis_scoreboard\utils\HibernateUtil.class
+com\skillnez\tennis_scoreboard\dao\BaseRepository.class
+com\skillnez\tennis_scoreboard\entity\Player.class
+com\skillnez\tennis_scoreboard\mapper\PlayerMapper.class
+com\skillnez\tennis_scoreboard\dto\PlayerRequestDto.class
+com\skillnez\tennis_scoreboard\dao\Repository.class
+com\skillnez\tennis_scoreboard\dao\PlayerRepository.class

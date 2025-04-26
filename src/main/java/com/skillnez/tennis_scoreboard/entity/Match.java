@@ -32,4 +32,9 @@ public class Match implements BaseEntity<Integer> {
     public void setId(Integer id) {
         this.id = id;
     }
+
+    @Override
+    public Integer getId() {
+        return id;
+    }
 }

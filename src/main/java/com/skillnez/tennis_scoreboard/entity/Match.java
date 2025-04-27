@@ -6,7 +6,6 @@ import lombok.*;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 @Builder
 @Table(name = "MATCHES")
 @Getter
@@ -17,16 +16,17 @@ public class Match implements BaseEntity<Integer> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "PLAYER1_ID")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "PLAYER1_ID", referencedColumnName = "id")
     private Player player1;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "PLAYER2_ID")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "PLAYER2_ID", referencedColumnName = "id")
     private Player player2;
 
-    @Column(name = "WINNER")
-    private int winnerId;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "WINNER", referencedColumnName = "id")
+    private Player winner;
 
     @Override
     public void setId(Integer id) {

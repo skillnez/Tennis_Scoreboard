@@ -8,7 +8,7 @@ import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-04-26T20:04:34+0300",
+    date = "2025-04-27T16:58:02+0300",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 22.0.2 (Oracle Corporation)"
 )
 @ApplicationScoped
@@ -20,13 +20,10 @@ public class MatchMapperImpl implements MatchMapper {
             return null;
         }
 
-        int winnerId = 0;
-
-        winnerId = match.getWinnerId();
-
         int matchId = 0;
         int player1Id = 0;
         int player2Id = 0;
+        int winnerId = 0;
 
         MatchResponseDto matchResponseDto = new MatchResponseDto( matchId, player1Id, player2Id, winnerId );
 
@@ -40,8 +37,6 @@ public class MatchMapperImpl implements MatchMapper {
         }
 
         Match.MatchBuilder match = Match.builder();
-
-        match.winnerId( matchResponseDto.winnerId() );
 
         return match.build();
     }

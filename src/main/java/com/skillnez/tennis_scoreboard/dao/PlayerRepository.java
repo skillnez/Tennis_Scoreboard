@@ -3,24 +3,22 @@ package com.skillnez.tennis_scoreboard.dao;
 import com.skillnez.tennis_scoreboard.entity.Player;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
+import org.hibernate.Session;
 
 import java.util.Optional;
 
 @ApplicationScoped
 public class PlayerRepository extends BaseRepository <Integer, Player>{
 
-    @Inject
-    public PlayerRepository(EntityManager entityManager) {
-        super(Player.class, entityManager);
+    public PlayerRepository() {
+        super(Player.class);
     }
 
     public Optional<Player> getByName(String name) {
-        try {
-            return Optional.ofNullable(getEntityManager()
-                    .createQuery("select p from Player p where p.name = :name", Player.class)
-                    .setParameter("name", name).getSingleResult());
+        try(Session session = getSessionFactory().openSession()) {
+            return session.createQuery("select p from Player p where p.name = :name", Player.class)
+                    .setParameter("name", name).uniqueResultOptional();
         } catch (NoResultException e) {
             return Optional.empty();
         }

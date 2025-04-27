@@ -15,24 +15,10 @@ import java.lang.reflect.Proxy;
 public class PlayerService {
 
     @Inject
-    PlayerRepository playerRepository;
+    private PlayerRepository playerRepository;
 
-    public Player takePlayer (String name) {
-        if (playerRepository.getByName(name).isEmpty()){
-            return createPlayer(name);
-        }
-        return playerRepository.getByName(name).get();
-    }
-
-    private Player createPlayer (String name) {
-        @Cleanup SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-        @Cleanup var session = (Session) Proxy.newProxyInstance(SessionFactory.class.getClassLoader(),
-                new Class[]{Session.class},
-                ((proxy, method, args1) -> method.invoke(sessionFactory.getCurrentSession(), args1)));
-        session.beginTransaction();
-        Player player = playerRepository.save(takePlayer(name));
-        session.getTransaction().commit();
-        return player;
+    public Player takeOrSavePlayer (String name) {
+       return playerRepository.getByName(name).orElseGet(() -> playerRepository.save(Player.builder().name(name).build()));
     }
 
 }

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="tennisTableDb" uuid="af447e62-3ea0-4a7b-b0f5-59343945e010">
+    <data-source source="LOCAL" name="db" uuid="2c9abca6-df99-4e40-a3ec-80dd3a1d4f23">
       <driver-ref>h2.unified</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.h2.Driver</jdbc-driver>
-      <jdbc-url>jdbc:h2:mem:tennisTableDb</jdbc-url>
+      <jdbc-url>jdbc:h2:C:\Users\skill\IdeaProjects\Tennis_Scoreboard\db</jdbc-url>
       <jdbc-additional-properties>
         <property name="com.intellij.clouds.kubernetes.db.host.port" />
         <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />

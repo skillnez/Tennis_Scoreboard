@@ -24,6 +24,7 @@ public class MatchScoreServlet extends HttpServlet {
 
         //Временно, переделай на обработку optional
         MatchScore matchScore = ongoingMatchService.getOngoingMatch(uuid).get();
+        int i = 0;
         req.setAttribute("matchScore", matchScore);
         req.setAttribute("uuid", uuid);
         req.getRequestDispatcher("match-score.jsp").forward(req, resp);

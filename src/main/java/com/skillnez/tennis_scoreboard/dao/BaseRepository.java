@@ -23,7 +23,9 @@ public abstract class BaseRepository<K extends Serializable, E extends BaseEntit
     @Override
     public E save(E entity) {
         @Cleanup var session = sessionFactory.openSession();
+        session.beginTransaction();
         session.persist(entity);
+        session.getTransaction().commit();
         return entity;
     }
 

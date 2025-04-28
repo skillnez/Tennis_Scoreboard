@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.UUID;
 
-@WebServlet("/new_match")
+@WebServlet("/new-match")
 public class NewMatchServlet extends HttpServlet {
 
     @Inject
@@ -26,7 +26,6 @@ public class NewMatchServlet extends HttpServlet {
         String playerTwo = req.getParameter("playerTwo");
         playerService.takeOrSavePlayer(playerOne);
         playerService.takeOrSavePlayer(playerTwo);
-        // TODO Не сохраняются игроки в базу, у обоих id = 0, надо доделать
         UUID uuid = ongoingMatchService.createOngoingMatch(playerOne, playerTwo);
         resp.sendRedirect("/match-score?uuid=" + uuid);
     }

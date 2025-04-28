@@ -28,6 +28,9 @@ public class Match implements BaseEntity<Integer> {
     @JoinColumn(name = "WINNER", referencedColumnName = "id")
     private Player winner;
 
+    @Transient
+    private MatchScore matchScore;
+
     @Override
     public void setId(Integer id) {
         this.id = id;

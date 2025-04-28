@@ -2,8 +2,11 @@ package com.skillnez.tennis_scoreboard.service;
 
 import com.skillnez.tennis_scoreboard.entity.Match;
 import com.skillnez.tennis_scoreboard.entity.MatchScore;
+import com.skillnez.tennis_scoreboard.entity.Player;
+import com.skillnez.tennis_scoreboard.entity.PlayerScore;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.ws.rs.NotFoundException;
 import lombok.Getter;
 
 import java.util.Optional;
@@ -19,22 +22,36 @@ public class OngoingMatchService {
     private final ConcurrentHashMap<UUID, MatchScore> ongoingMatches = new ConcurrentHashMap<>();
 
     public UUID createOngoingMatch (String player1, String player2) {
-        Match match = Match.builder()
-                .player1(playerService.takeOrSavePlayer(player1))
-                .player2(playerService.takeOrSavePlayer(player2))
+        Player playerOne = playerService.takeOrSavePlayer(player1);
+        Player playerTwo = playerService.takeOrSavePlayer(player2);
+        PlayerScore playerOneScore = PlayerScore.builder()
+                .player(playerOne)
+                .sets(0)
+                .games(0)
+                .points(0)
+                .build();
+        PlayerScore playerTwoScore = PlayerScore.builder()
+                .player(playerTwo)
+                .sets(0)
+                .games(0)
+                .points(0)
                 .build();
         MatchScore matchScore = MatchScore.builder()
-                .match(match)
-                .sets(MatchScore.INIT_SET_VALUE)
-                .games(MatchScore.INIT_GAME_VALUE)
-                .points(MatchScore.INIT_POINTS_VALUE)
+                .playerOneScore(playerOneScore)
+                .playerTwoScore(playerTwoScore)
                 .build();
         UUID uuid = UUID.randomUUID();
         ongoingMatches.put(uuid, matchScore);
         return uuid;
-
     }
-    public Optional<MatchScore> getOngoingMatch (UUID uuid) {
-        return Optional.ofNullable(ongoingMatches.get(uuid));
+
+    public Match getOngoingMatch (UUID uuid) {
+        MatchScore matchScore = Optional.ofNullable(ongoingMatches.get(uuid))
+                .orElseThrow(() -> new NotFoundException("Матч с UUID " + uuid + " не найден"));
+        return Match.builder()
+                .player1(matchScore.getPlayerOneScore().getPlayer())
+                .player2(matchScore.getPlayerTwoScore().getPlayer())
+                .matchScore(matchScore)
+                .build();
     }
 }

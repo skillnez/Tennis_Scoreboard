@@ -1,6 +1,6 @@
 package com.skillnez.tennis_scoreboard.controller;
 
-import com.skillnez.tennis_scoreboard.entity.MatchScore;
+import com.skillnez.tennis_scoreboard.entity.Match;
 import com.skillnez.tennis_scoreboard.service.OngoingMatchService;
 import jakarta.inject.Inject;
 import jakarta.servlet.ServletException;
@@ -22,11 +22,15 @@ public class MatchScoreServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         UUID uuid = UUID.fromString(req.getParameter("uuid"));
 
-        //Временно, переделай на обработку optional
-        MatchScore matchScore = ongoingMatchService.getOngoingMatch(uuid).get();
-        int i = 0;
-        req.setAttribute("matchScore", matchScore);
+        Match match = ongoingMatchService.getOngoingMatch(uuid);
+        match.getMatchScore().getPlayerOneScore().getPlayer().getName();
+        req.setAttribute("match", match);
         req.setAttribute("uuid", uuid);
-        req.getRequestDispatcher("match-score.jsp").forward(req, resp);
+        req.getRequestDispatcher("/match-score.jsp").forward(req, resp);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        super.doPost(req, resp);
     }
 }

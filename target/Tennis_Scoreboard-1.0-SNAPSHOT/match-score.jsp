@@ -1,4 +1,5 @@
 <jsp:useBean id="match" scope="request" type="com.skillnez.tennis_scoreboard.entity.Match"/>
+<jsp:useBean id="uuid" scope="request" type="java.util.UUID"/>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
@@ -56,7 +57,10 @@
                     <td class="table-text">${match.matchScore.playerOneScore.games}</td>
                     <td class="table-text">${match.matchScore.playerOneScore.points}</td>
                     <td class="table-text">
-                        <div class="score-btn">Score</div>
+                        <form action="match-score?uuid=${uuid}" method="POST">
+                            <input type="hidden" name="playerId" value="${match.player1.id}" />
+                            <button type="submit" class="score-btn">Score</button>
+                        </form>
                     </td>
                 </tr>
                 <tr class="player2">
@@ -65,7 +69,10 @@
                     <td class="table-text">${match.matchScore.playerTwoScore.games}</td>
                     <td class="table-text">${match.matchScore.playerTwoScore.points}</td>
                     <td class="table-text">
-                        <div class="score-btn">Score</div>
+                        <form action="match-score?uuid=${uuid}" method="POST">
+                            <input type="hidden" name="playerId" value="${match.player2.id}" />
+                            <button type="submit" class="score-btn">Score</button>
+                        </form>
                     </td>
                 </tr>
                 </tbody>

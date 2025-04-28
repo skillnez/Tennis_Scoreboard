@@ -12,6 +12,18 @@ public class PlayerScore {
 
     private int sets;
 
+    public void addSets () {
+        sets++;
+    }
+
+    public void addGames() {
+        games++;
+    }
+
+    public void addPoints () {
+        points++;
+    }
+
     private int games;
 
     private int points;

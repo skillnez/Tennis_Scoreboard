@@ -1,3 +1,8 @@
+<jsp:useBean id="match" scope="request" type="com.skillnez.tennis_scoreboard.entity.Match"/>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+
 <html>
 <head>
     <meta charset="UTF-8">
@@ -24,8 +29,8 @@
         </div>
         <div>
             <nav class="nav-links">
-                <a class="nav-link" href="#">Home</a>
-                <a class="nav-link" href="#">Matches</a>
+                <a class="nav-link" href="index.jsp">Home</a>
+                <a class="nav-link" href="matches.jsp">Matches</a>
             </nav>
         </div>
     </section>
@@ -46,19 +51,19 @@
                 </thead>
                 <tbody>
                 <tr class="player1">
-                    <td class="table-text">Rafael Nadal</td>
-                    <td class="table-text">2</td>
-                    <td class="table-text">4</td>
-                    <td class="table-text">40</td>
+                    <td class="table-text">${match.matchScore.playerOneScore.player.name}</td>
+                    <td class="table-text">${match.matchScore.playerOneScore.sets}</td>
+                    <td class="table-text">${match.matchScore.playerOneScore.games}</td>
+                    <td class="table-text">${match.matchScore.playerOneScore.points}</td>
                     <td class="table-text">
                         <div class="score-btn">Score</div>
                     </td>
                 </tr>
                 <tr class="player2">
-                    <td class="table-text">Roger Federer</td>
-                    <td class="table-text">2</td>
-                    <td class="table-text">3</td>
-                    <td class="table-text">15</td>
+                    <td class="table-text">${match.matchScore.playerTwoScore.player.name}</td>
+                    <td class="table-text">${match.matchScore.playerTwoScore.sets}</td>
+                    <td class="table-text">${match.matchScore.playerTwoScore.games}</td>
+                    <td class="table-text">${match.matchScore.playerTwoScore.points}</td>
                     <td class="table-text">
                         <div class="score-btn">Score</div>
                     </td>

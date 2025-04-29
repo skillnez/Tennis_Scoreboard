@@ -1,7 +1,7 @@
 package com.skillnez.tennis_scoreboard.controller;
 
 import com.skillnez.tennis_scoreboard.service.OngoingMatchService;
-import com.skillnez.tennis_scoreboard.service.PlayerService;
+import com.skillnez.tennis_scoreboard.service.PlayerPersistenceService;
 import jakarta.inject.Inject;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -18,14 +18,14 @@ public class NewMatchServlet extends HttpServlet {
     @Inject
     private OngoingMatchService ongoingMatchService;
     @Inject
-    private PlayerService playerService;
+    private PlayerPersistenceService playerPersistenceService;
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String playerOne = req.getParameter("playerOne");
         String playerTwo = req.getParameter("playerTwo");
-        playerService.takeOrSavePlayer(playerOne);
-        playerService.takeOrSavePlayer(playerTwo);
+        playerPersistenceService.takeOrSavePlayer(playerOne);
+        playerPersistenceService.takeOrSavePlayer(playerTwo);
         UUID uuid = ongoingMatchService.createOngoingMatch(playerOne, playerTwo);
         resp.sendRedirect("/match-score?uuid=" + uuid);
     }

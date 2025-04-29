@@ -7,7 +7,6 @@ import com.skillnez.tennis_scoreboard.entity.PlayerScore;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.NotFoundException;
-import lombok.Getter;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -17,13 +16,13 @@ import java.util.concurrent.ConcurrentHashMap;
 public class OngoingMatchService {
 
     @Inject
-    PlayerService playerService;
+    PlayerPersistenceService playerPersistenceService;
 
     private final ConcurrentHashMap<UUID, MatchScore> ongoingMatches = new ConcurrentHashMap<>();
 
     public UUID createOngoingMatch (String player1, String player2) {
-        Player playerOne = playerService.takeOrSavePlayer(player1);
-        Player playerTwo = playerService.takeOrSavePlayer(player2);
+        Player playerOne = playerPersistenceService.takeOrSavePlayer(player1);
+        Player playerTwo = playerPersistenceService.takeOrSavePlayer(player2);
         PlayerScore playerOneScore = PlayerScore.builder()
                 .player(playerOne)
                 .sets(0)

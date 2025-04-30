@@ -7,6 +7,8 @@ import jakarta.enterprise.context.ApplicationScoped;
 @ApplicationScoped
 public class MatchScoreCalculationService {
 
+    private boolean tieBreak = false;
+
     private boolean isWinner(PlayerScore playerScore, int playerId) {
         return playerScore.getPlayer().getId().equals(playerId);
     }
@@ -16,12 +18,50 @@ public class MatchScoreCalculationService {
         PlayerScore playerTwoScore = match.getMatchScore().getPlayerTwoScore();
 
         PlayerScore winner = isWinner(playerOneScore, playerId) ? playerOneScore : playerTwoScore;
-        PlayerScore loser = isWinner(playerTwoScore, playerId) ? playerTwoScore : playerOneScore;
+        PlayerScore loser = !isWinner(playerTwoScore, playerId) ? playerTwoScore : playerOneScore;
 
-        winner.addPoints();
-        if (winner.getPoints() > 3) {
-            resetPoints(winner, loser);
-            winner.addGames();
+        if (tieBreak) {
+            winner.setPoints(winner.getPoints() + 1);
+            if (winner.getPoints() >= 7 && winner.getPoints() - loser.getPoints() >= 2) {
+                winner.setSets(winner.getSets() + 1);
+                resetGames(winner, loser);
+                tieBreak = false;
+                resetPoints(winner, loser);
+            }
+            return;
+        }
+
+        if (winner.getPoints() < 3 && !tieBreak) {
+            winner.setPoints(winner.getPoints() + 1);
+        } else if (winner.getPoints() == 3 && !tieBreak) {
+            if (loser.getPoints() < 3) {
+                winGame(match, winner, loser);
+            } else if (loser.getPoints() == 3) {
+                winner.setPoints(4);
+            } else {
+                loser.setPoints(3);
+            }
+        } else if (winner.getPoints() == 4 && !tieBreak) {
+            winGame(match, winner, loser);
+        }
+    }
+
+    private void winGame(Match match, PlayerScore winner, PlayerScore loser) {
+        winner.setGames(winner.getGames() + 1);
+        resetPoints(winner, loser);
+
+        int playerOneGames = match.getMatchScore().getPlayerOneScore().getGames();
+        int playerTwoGames = match.getMatchScore().getPlayerTwoScore().getGames();
+
+        if (playerOneGames == 6 && playerTwoGames == 6) {
+            tieBreak = true;
+        } else if ((playerOneGames >= 6 || playerTwoGames >= 6) && Math.abs(playerOneGames - playerTwoGames) >= 2) {
+            if (playerOneGames > playerTwoGames) {
+                match.getMatchScore().getPlayerOneScore().setSets(match.getMatchScore().getPlayerOneScore().getSets() + 1);
+            } else {
+                match.getMatchScore().getPlayerTwoScore().setSets(match.getMatchScore().getPlayerTwoScore().getSets() + 1);
+            }
+            resetGames(match.getMatchScore().getPlayerOneScore(), match.getMatchScore().getPlayerTwoScore());
         }
     }
 
@@ -35,20 +75,4 @@ public class MatchScoreCalculationService {
         playerTwoScore.setGames(0);
     }
 
-//    Просто + очки
-//    if (player1.points < 41 || player2.points <41) {
-//        points +15
-//    }
-//
-//    Выйграл гейм
-//    if (player1.poins > 40 || player2.points > 40 && player1.points!=40 && player2.points !=40) {
-//        points = 0;
-//        games +1
-//    }
-//
-//    Ровно
-//    if (player1.points = 40 && player2.points = player1.points) {
-//        while (player1.points - player2.points || player2.points - player1.points < 30){
-//
-//        }
 }

@@ -8,9 +8,22 @@ import jakarta.enterprise.context.ApplicationScoped;
 public class MatchScoreCalculationService {
 
     private boolean tieBreak = false;
+    private boolean isMatchEnded = false;
 
     private boolean isWinner(PlayerScore playerScore, int playerId) {
         return playerScore.getPlayer().getId().equals(playerId);
+    }
+
+    public boolean isMatchEnded() {
+        return isMatchEnded;
+    }
+
+    private void endMatch() {
+        isMatchEnded = true;
+    }
+
+    public void startMatch() {
+        isMatchEnded = false;
     }
 
     public void calculateScore(int playerId, Match match) {
@@ -20,7 +33,12 @@ public class MatchScoreCalculationService {
         PlayerScore winner = isWinner(playerOneScore, playerId) ? playerOneScore : playerTwoScore;
         PlayerScore loser = !isWinner(playerTwoScore, playerId) ? playerTwoScore : playerOneScore;
 
-        if (tieBreak) {
+        if (winner.getSets() == 3 || winner.getSets() - loser.getSets() >= 2) {
+            endMatch();
+            match.setWinner(winner.getPlayer());
+        }
+
+        if (tieBreak && !isMatchEnded) {
             winner.setPoints(winner.getPoints() + 1);
             if (winner.getPoints() >= 7 && winner.getPoints() - loser.getPoints() >= 2) {
                 winner.setSets(winner.getSets() + 1);
@@ -31,9 +49,9 @@ public class MatchScoreCalculationService {
             return;
         }
 
-        if (winner.getPoints() < 3 && !tieBreak) {
+        if (winner.getPoints() < 3 && !tieBreak && !isMatchEnded) {
             winner.setPoints(winner.getPoints() + 1);
-        } else if (winner.getPoints() == 3 && !tieBreak) {
+        } else if (winner.getPoints() == 3 && !tieBreak && !isMatchEnded) {
             if (loser.getPoints() < 3) {
                 winGame(match, winner, loser);
             } else if (loser.getPoints() == 3) {
@@ -41,7 +59,7 @@ public class MatchScoreCalculationService {
             } else {
                 loser.setPoints(3);
             }
-        } else if (winner.getPoints() == 4 && !tieBreak) {
+        } else if (winner.getPoints() == 4 && !tieBreak && !isMatchEnded) {
             winGame(match, winner, loser);
         }
     }
@@ -73,6 +91,20 @@ public class MatchScoreCalculationService {
     private void resetGames(PlayerScore playerOneScore, PlayerScore playerTwoScore) {
         playerOneScore.setGames(0);
         playerTwoScore.setGames(0);
+    }
+
+    public String formatPoints (PlayerScore playerScore) {
+        if (tieBreak) {
+            return String.valueOf(playerScore.getPoints()); // просто число
+        }
+        return switch (playerScore.getPoints()) {
+            case 0 -> "0";
+            case 1 -> "15";
+            case 2 -> "30";
+            case 3 -> "40";
+            case 4 -> "AD";
+            default -> "";
+        };
     }
 
 }

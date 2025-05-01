@@ -53,4 +53,19 @@ public class OngoingMatchService {
                 .matchScore(matchScore)
                 .build();
     }
+
+    public void removeOngoingMatch (UUID uuid) {
+        ongoingMatches.remove(uuid);
+    }
+
+    public PlayerScore getPlayerScoreByPlayerId (int playerId, UUID uuid) {
+        MatchScore matchScore = ongoingMatches.get(uuid);
+        if (matchScore.getPlayerOneScore().getPlayer().getId().equals(playerId)) {
+            return matchScore.getPlayerOneScore();
+        }
+        if (matchScore.getPlayerTwoScore().getPlayer().getId().equals(playerId)) {
+            return matchScore.getPlayerTwoScore();
+        } else
+            throw new NotFoundException();
+    }
 }

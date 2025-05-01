@@ -55,11 +55,14 @@
                     <td class="table-text">${match.matchScore.playerOneScore.player.name}</td>
                     <td class="table-text">${match.matchScore.playerOneScore.sets}</td>
                     <td class="table-text">${match.matchScore.playerOneScore.games}</td>
-                    <td class="table-text">${match.matchScore.playerOneScore.points}</td>
+                    <td class="table-text">${playerOnePoints}</td>
                     <td class="table-text">
                         <form action="match-score?uuid=${uuid}" method="POST">
                             <input type="hidden" name="playerId" value="${match.player1.id}" />
-                            <button type="submit" class="score-btn">Score</button>
+                            <button type="submit" class="score-btn"
+                            ${matchOver ? 'disabled' : ''}>
+                                ${matchOver ? 'Match is Over' : 'Score'}
+                            </button>
                         </form>
                     </td>
                 </tr>
@@ -67,11 +70,14 @@
                     <td class="table-text">${match.matchScore.playerTwoScore.player.name}</td>
                     <td class="table-text">${match.matchScore.playerTwoScore.sets}</td>
                     <td class="table-text">${match.matchScore.playerTwoScore.games}</td>
-                    <td class="table-text">${match.matchScore.playerTwoScore.points}</td>
+                    <td class="table-text">${playerTwoPoints}</td>
                     <td class="table-text">
                         <form action="match-score?uuid=${uuid}" method="POST">
                             <input type="hidden" name="playerId" value="${match.player2.id}" />
-                            <button type="submit" class="score-btn">Score</button>
+                            <button type="submit" class="score-btn"
+                            ${matchOver ? 'disabled' : ''}>
+                                ${matchOver ? 'Match is Over' : 'Score'}
+                            </button>
                         </form>
                     </td>
                 </tr>

@@ -4,6 +4,7 @@ import com.skillnez.tennis_scoreboard.dao.PlayerRepository;
 import com.skillnez.tennis_scoreboard.entity.Match;
 import com.skillnez.tennis_scoreboard.entity.Player;
 import com.skillnez.tennis_scoreboard.entity.PlayerScore;
+import com.skillnez.tennis_scoreboard.service.FinishedMatchesPersistenceService;
 import com.skillnez.tennis_scoreboard.service.MatchScoreCalculationService;
 import com.skillnez.tennis_scoreboard.service.OngoingMatchService;
 import jakarta.inject.Inject;
@@ -25,14 +26,14 @@ public class MatchScoreServlet extends HttpServlet {
     private PlayerRepository playerRepository;
     @Inject
     private MatchScoreCalculationService matchScoreCalculationService;
+    @Inject
+    FinishedMatchesPersistenceService finishedMatchesPersistenceService;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         UUID uuid = UUID.fromString(req.getParameter("uuid"));
         Match match = ongoingMatchService.getOngoingMatch(uuid);
-        req.setAttribute("match", match);
-        req.setAttribute("uuid", uuid);
-        req.getRequestDispatcher("/match-score.jsp").forward(req, resp);
+        renderMatchScorePage(req, resp, uuid, match);
     }
 
     @Override
@@ -41,8 +42,21 @@ public class MatchScoreServlet extends HttpServlet {
         int playerId = Integer.parseInt(req.getParameter("playerId"));
         Match match = ongoingMatchService.getOngoingMatch(uuid);
         matchScoreCalculationService.calculateScore(playerId, match);
-        resp.sendRedirect("/match-score?uuid=" + uuid);
+        if (matchScoreCalculationService.isMatchEnded()){
+            finishedMatchesPersistenceService.save(match);
+            ongoingMatchService.removeOngoingMatch(uuid);
+            matchScoreCalculationService.startMatch();
+        }
+        renderMatchScorePage(req, resp, uuid, match);
+    }
 
+    private void renderMatchScorePage(HttpServletRequest req, HttpServletResponse resp, UUID uuid, Match match) throws ServletException, IOException {
+        req.setAttribute("match", match);
+        req.setAttribute("uuid", uuid);
+        req.setAttribute("playerOnePoints", matchScoreCalculationService.formatPoints(match.getMatchScore().getPlayerOneScore()));
+        req.setAttribute("playerTwoPoints", matchScoreCalculationService.formatPoints(match.getMatchScore().getPlayerTwoScore()));
+        req.setAttribute("matchOver", match.getWinner() != null);
+        req.getRequestDispatcher("/match-score.jsp").forward(req, resp);
     }
 
 }

@@ -9,7 +9,6 @@ import org.hibernate.SessionFactory;
 @ApplicationScoped
 public class MatchRepository extends BaseRepository<Integer, Match> {
 
-    @Inject
     public MatchRepository() {
         super(Match.class);
     }

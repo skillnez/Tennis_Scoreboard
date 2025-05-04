@@ -1,6 +1,5 @@
-package com.skillnez.tennis_scoreboard.dao;
+package com.skillnez.tennis_scoreboard.utils;
 
-import com.skillnez.tennis_scoreboard.utils.HibernateUtil;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Produces;
 import org.hibernate.SessionFactory;

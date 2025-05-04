@@ -12,7 +12,8 @@ public class PlayerPersistenceService {
     private PlayerRepository playerRepository;
 
     public Player takeOrSavePlayer (String name) {
-       return playerRepository.getByName(name).orElseGet(() -> playerRepository.save(Player.builder().name(name).build()));
+       return playerRepository.getByName(name)
+               .orElseGet(() -> playerRepository.save(Player.builder().name(name).build()));
     }
 
 }

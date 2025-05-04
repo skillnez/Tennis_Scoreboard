@@ -34,6 +34,7 @@ public class MatchScoreServlet extends HttpServlet {
         UUID uuid = UUID.fromString(req.getParameter("uuid"));
         Match match = ongoingMatchService.getOngoingMatch(uuid);
         renderMatchScorePage(req, resp, uuid, match);
+        req.getRequestDispatcher("/match-score.jsp").forward(req, resp);
     }
 
     @Override
@@ -48,6 +49,7 @@ public class MatchScoreServlet extends HttpServlet {
             matchScoreCalculationService.startMatch();
         }
         renderMatchScorePage(req, resp, uuid, match);
+        resp.sendRedirect("/match-score?uuid=" + uuid);
     }
 
     private void renderMatchScorePage(HttpServletRequest req, HttpServletResponse resp, UUID uuid, Match match) throws ServletException, IOException {
@@ -56,7 +58,6 @@ public class MatchScoreServlet extends HttpServlet {
         req.setAttribute("playerOnePoints", matchScoreCalculationService.formatPoints(match.getMatchScore().getPlayerOneScore()));
         req.setAttribute("playerTwoPoints", matchScoreCalculationService.formatPoints(match.getMatchScore().getPlayerTwoScore()));
         req.setAttribute("matchOver", match.getWinner() != null);
-        req.getRequestDispatcher("/match-score.jsp").forward(req, resp);
     }
 
 }

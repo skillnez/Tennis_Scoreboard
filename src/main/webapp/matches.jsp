@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -23,7 +24,7 @@
         <div>
             <nav class="nav-links">
                 <a class="nav-link" href="index.jsp">Home</a>
-                <a class="nav-link" href="matches.jsp">Matches</a>
+                <a class="nav-link" href="matches?page=1">Matches</a>
             </nav>
         </div>
     </section>
@@ -46,39 +47,38 @@
                 <th>Player Two</th>
                 <th>Winner</th>
             </tr>
+            <c:forEach var="match" items="${pagedMatches}">
             <tr>
-                <td>Rafael Nadal</td>
-                <td>Roger Federer</td>
-                <td><span class="winner-name-td">Rafael Nadal</span></td>
+                <td>${match.player1.name}</td>
+                <td>${match.player2.name}</td>
+                <td><span class="winner-name-td">${match.winner.name}</span></td>
             </tr>
-            <tr>
-                <td>Rafael Nadal</td>
-                <td>Roger Federer</td>
-                <td><span class="winner-name-td">Roger Federer</span></td>
-            </tr>
-            <tr>
-                <td>Rafael Nadal</td>
-                <td>Roger Federer</td>
-                <td><span class="winner-name-td">Rafael Nadal</span></td>
-            </tr>
-            <tr>
-                <td>Rafael Nadal</td>
-                <td>Roger Federer</td>
-                <td><span class="winner-name-td">Roger Federer</span></td>
-            </tr>
-            <tr>
-                <td>Rafael Nadal</td>
-                <td>Roger Federer</td>
-                <td><span class="winner-name-td">Rafael Nadal</span></td>
-            </tr>
+            </c:forEach>
         </table>
 
         <div class="pagination">
-            <a class="prev" href="#"> < </a>
-            <a class="num-page current" href="#">1</a>
-            <a class="num-page" href="#">2</a>
-            <a class="num-page" href="#">3</a>
-            <a class="next" href="#"> > </a>
+
+            <a class="prev" href="?page=${pageNumber - 1}"
+               <c:if test="${pageNumber == 1}">style="pointer-events:none;opacity:0.4;"</c:if>> &lt; </a>
+
+            <c:if test="${startPage > 1}">
+                <a class="num-page" href="?page=1">1</a>
+                <span>...</span>
+            </c:if>
+
+            <%-- Только ближайшие 5 страниц --%>
+            <c:forEach var="p" begin="${startPage}" end="${endPage}">
+                <a class="num-page ${p == pageNumber ? 'current' : ''}" href="?page=${p}">${p}</a>
+            </c:forEach>
+
+            <%-- Последняя страница всегда --%>
+            <c:if test="${endPage < totalPagesCount}">
+                <span>...</span>
+                <a class="num-page" href="?page=${totalPagesCount}">${totalPagesCount}</a>
+            </c:if>
+
+            <a class="next" href="?page=${pageNumber + 1}"
+               <c:if test="${pageNumber == totalPagesCount}">style="pointer-events:none;opacity:0.4;"</c:if>> &gt; </a>
         </div>
     </div>
 </main>

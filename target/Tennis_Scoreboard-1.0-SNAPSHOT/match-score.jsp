@@ -1,5 +1,3 @@
-<jsp:useBean id="match" scope="request" type="com.skillnez.tennis_scoreboard.entity.Match"/>
-<jsp:useBean id="uuid" scope="request" type="java.util.UUID"/>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
@@ -31,7 +29,7 @@
         <div>
             <nav class="nav-links">
                 <a class="nav-link" href="index.jsp">Home</a>
-                <a class="nav-link" href="matches.jsp">Matches</a>
+                <a class="nav-link" href="matches?page=1">Matches</a>
             </nav>
         </div>
     </section>

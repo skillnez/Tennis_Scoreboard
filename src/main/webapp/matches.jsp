@@ -34,6 +34,7 @@
         <h1>Matches</h1>
         <div class="input-container">
             <form method="get" action="${pageContext.request.contextPath}/matches" class="input-container">
+
                 <input
                         class="input-filter"
                         name="filter_by_player_name"
@@ -44,9 +45,11 @@
                 <input type="hidden" name="page" value="1" />
 
                 <button class="btn-filter" type="submit">Apply Filter</button>
-
-                <a href="${pageContext.request.contextPath}/matches?page=1">
-                    <button class="btn-filter">Reset Filter</button>
+                <a href="${pageContext.request.contextPath}/matches?page=1"
+                   class="btn-filter"
+                   style="display: inline-block; text-decoration: none; padding: 10px 20px; background-color: #42aaff;
+          color: white; border-radius: 20px; font-size: 17px; text-align: center; line-height: 1.5;">
+                    Reset Filter
                 </a>
             </form>
         </div>

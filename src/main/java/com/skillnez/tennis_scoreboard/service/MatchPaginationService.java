@@ -17,14 +17,20 @@ public class MatchPaginationService {
     @Inject
     PaginationConfig paginationConfig;
 
-    public List<Match> getPagedMatches (int pageNumber) {
+    public List<Match> getPagedMatches (int pageNumber, String playerName) {
         int pageSize = paginationConfig.getPageSize();
-        return  matchRepository.findPagedMatches(pageNumber, pageSize);
+        if (playerName == null || playerName.isEmpty() || playerName.isBlank()) {
+            return  matchRepository.findPagedMatches(pageNumber, pageSize);
+        }
+        return  matchRepository.findPagedMatchesByPlayerName(pageNumber, pageSize, playerName);
     }
 
-    public int getTotalPages() {
+    public int getTotalPages(String playerName) {
         int pageSize = paginationConfig.getPageSize();
         long matchesCount = matchRepository.countAllMatches();
+        if (playerName != null && !playerName.isEmpty() && !playerName.isBlank()) {
+            matchesCount = matchRepository.countFilteredMatches(playerName);
+        }
         return (int) Math.ceil((double) matchesCount / pageSize);
     }
 
@@ -37,8 +43,8 @@ public class MatchPaginationService {
         return startPage;
     }
 
-    public long getEndPage(int pageNumber) {
-        long totalPages = getTotalPages();
+    public long getEndPage(int pageNumber, String playerName) {
+        long totalPages = getTotalPages(playerName);
         int endPage = pageNumber + 2;
         if (endPage > totalPages){
             return totalPages;

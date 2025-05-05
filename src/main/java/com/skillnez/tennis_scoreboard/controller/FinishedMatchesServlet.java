@@ -22,11 +22,12 @@ public class FinishedMatchesServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int pageNumber = Integer.parseInt(req.getParameter("page"));
+        String playerName = req.getParameter("filter_by_player_name");
         req.setAttribute("startPage", matchPaginationService.getStartPage(pageNumber));
-        req.setAttribute("endPage", matchPaginationService.getEndPage(pageNumber));
-        req.setAttribute("totalPagesCount", matchPaginationService.getTotalPages());
+        req.setAttribute("endPage", matchPaginationService.getEndPage(pageNumber, playerName));
+        req.setAttribute("totalPagesCount", matchPaginationService.getTotalPages(playerName));
         req.setAttribute("pageNumber", pageNumber);
-        req.setAttribute("pagedMatches", matchPaginationService.getPagedMatches(pageNumber));
+        req.setAttribute("pagedMatches", matchPaginationService.getPagedMatches(pageNumber, playerName));
 
         req.getRequestDispatcher("/matches.jsp").forward(req, resp);
     }

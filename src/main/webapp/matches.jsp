@@ -33,12 +33,22 @@
     <div class="container">
         <h1>Matches</h1>
         <div class="input-container">
-            <input class="input-filter" placeholder="Filter by name" type="text" />
-            <div>
-                <a href="#">
+            <form method="get" action="${pageContext.request.contextPath}/matches" class="input-container">
+                <input
+                        class="input-filter"
+                        name="filter_by_player_name"
+                        placeholder="Filter by name"
+                        type="text"
+                        value="${param.filter_by_player_name}" />
+
+                <input type="hidden" name="page" value="1" />
+
+                <button class="btn-filter" type="submit">Apply Filter</button>
+
+                <a href="${pageContext.request.contextPath}/matches?page=1">
                     <button class="btn-filter">Reset Filter</button>
                 </a>
-            </div>
+            </form>
         </div>
 
         <table class="table-matches">
@@ -48,36 +58,40 @@
                 <th>Winner</th>
             </tr>
             <c:forEach var="match" items="${pagedMatches}">
-            <tr>
-                <td>${match.player1.name}</td>
-                <td>${match.player2.name}</td>
-                <td><span class="winner-name-td">${match.winner.name}</span></td>
-            </tr>
+                <tr>
+                    <td>${match.player1.name}</td>
+                    <td>${match.player2.name}</td>
+                    <td><span class="winner-name-td">${match.winner.name}</span></td>
+                </tr>
             </c:forEach>
         </table>
 
         <div class="pagination">
-
-            <a class="prev" href="?page=${pageNumber - 1}"
+            <a class="prev"
+               href="?page=${pageNumber - 1}&filter_by_player_name=${param.filter_by_player_name}"
                <c:if test="${pageNumber == 1}">style="pointer-events:none;opacity:0.4;"</c:if>> &lt; </a>
 
             <c:if test="${startPage > 1}">
-                <a class="num-page" href="?page=1">1</a>
+                <a class="num-page"
+                   href="?page=1&filter_by_player_name=${param.filter_by_player_name}">1</a>
                 <span>...</span>
             </c:if>
 
-            <%-- Только ближайшие 5 страниц --%>
             <c:forEach var="p" begin="${startPage}" end="${endPage}">
-                <a class="num-page ${p == pageNumber ? 'current' : ''}" href="?page=${p}">${p}</a>
+                <a class="num-page ${p == pageNumber ? 'current' : ''}"
+                   href="?page=${p}&filter_by_player_name=${param.filter_by_player_name}">${p}</a>
             </c:forEach>
 
-            <%-- Последняя страница всегда --%>
             <c:if test="${endPage < totalPagesCount}">
                 <span>...</span>
-                <a class="num-page" href="?page=${totalPagesCount}">${totalPagesCount}</a>
+                <a class="num-page"
+                   href="?page=${totalPagesCount}&filter_by_player_name=${param.filter_by_player_name}">
+                        ${totalPagesCount}
+                </a>
             </c:if>
 
-            <a class="next" href="?page=${pageNumber + 1}"
+            <a class="next"
+               href="?page=${pageNumber + 1}&filter_by_player_name=${param.filter_by_player_name}"
                <c:if test="${pageNumber == totalPagesCount}">style="pointer-events:none;opacity:0.4;"</c:if>> &gt; </a>
         </div>
     </div>

@@ -55,18 +55,27 @@
         </div>
 
         <table class="table-matches">
-            <tr>
-                <th>Player One</th>
-                <th>Player Two</th>
-                <th>Winner</th>
-            </tr>
-            <c:forEach var="match" items="${pagedMatches}">
-                <tr>
-                    <td>${match.player1.name}</td>
-                    <td>${match.player2.name}</td>
-                    <td><span class="winner-name-td">${match.winner.name}</span></td>
-                </tr>
-            </c:forEach>
+            <c:choose>
+                <c:when test="${empty pagedMatches}">
+                    <tr>
+                        <td colspan="3" style="text-align: center; padding: 10px;">No matches found</td>
+                    </tr>
+                </c:when>
+                <c:otherwise>
+                    <tr>
+                        <th>Player One</th>
+                        <th>Player Two</th>
+                        <th>Winner</th>
+                    </tr>
+                    <c:forEach var="match" items="${pagedMatches}">
+                        <tr>
+                            <td>${match.player1.name}</td>
+                            <td>${match.player2.name}</td>
+                            <td><span class="winner-name-td">${match.winner.name}</span></td>
+                        </tr>
+                    </c:forEach>
+                </c:otherwise>
+            </c:choose>
         </table>
 
         <div class="pagination">

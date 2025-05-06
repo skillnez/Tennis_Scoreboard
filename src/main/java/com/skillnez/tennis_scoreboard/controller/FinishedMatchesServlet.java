@@ -21,8 +21,8 @@ public class FinishedMatchesServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        int pageNumber = Integer.parseInt(req.getParameter("page"));
         String playerName = req.getParameter("filter_by_player_name");
+        int pageNumber = matchPaginationService.validatePage(req.getParameter("page"), playerName);
         req.setAttribute("startPage", matchPaginationService.getStartPage(pageNumber));
         req.setAttribute("endPage", matchPaginationService.getEndPage(pageNumber, playerName));
         req.setAttribute("totalPagesCount", matchPaginationService.getTotalPages(playerName));

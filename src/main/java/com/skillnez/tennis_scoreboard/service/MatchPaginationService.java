@@ -17,6 +17,8 @@ public class MatchPaginationService {
     @Inject
     PaginationConfig paginationConfig;
 
+    private final static int FIRST_PAGE = 1;
+
     public List<Match> getPagedMatches (int pageNumber, String playerName) {
         int pageSize = paginationConfig.getPageSize();
         if (playerName == null || playerName.isEmpty() || playerName.isBlank()) {
@@ -36,20 +38,38 @@ public class MatchPaginationService {
 
     public long getStartPage(int pageNumber) {
         int startPage = pageNumber - 2;
-        if (startPage < 1) {
-            startPage = 1;
-            return startPage;
-        }
-        return startPage;
+        return Math.max(startPage, FIRST_PAGE);
     }
 
     public long getEndPage(int pageNumber, String playerName) {
         long totalPages = getTotalPages(playerName);
         int endPage = pageNumber + 2;
+        if (totalPages == 0) {
+            return FIRST_PAGE;
+        }
         if (endPage > totalPages){
             return totalPages;
         }
         return endPage;
+    }
+
+    public int validatePage(String pageNumber, String playerName) {
+        if (pageNumber == null || pageNumber.isEmpty() || pageNumber.isBlank()) {
+            return FIRST_PAGE;
+        }
+        try {
+            int page = Integer.parseInt(pageNumber);
+            int totalPages = getTotalPages(playerName);
+            if (totalPages == 0) {
+                return FIRST_PAGE;
+            }
+            if (page > totalPages) {
+                return totalPages;
+            }
+            return Math.max(page, 1);
+        } catch (NumberFormatException e) {
+            return FIRST_PAGE;
+        }
     }
 
 }

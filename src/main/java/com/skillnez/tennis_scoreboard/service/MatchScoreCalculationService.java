@@ -33,11 +33,6 @@ public class MatchScoreCalculationService {
         PlayerScore winner = isWinner(playerOneScore, playerId) ? playerOneScore : playerTwoScore;
         PlayerScore loser = !isWinner(playerTwoScore, playerId) ? playerTwoScore : playerOneScore;
 
-        if (winner.getSets() == 3 || winner.getSets() - loser.getSets() >= 2) {
-            endMatch();
-            match.setWinner(winner.getPlayer());
-        }
-
         if (tieBreak && !isMatchEnded) {
             winner.setPoints(winner.getPoints() + 1);
             if (winner.getPoints() >= 7 && winner.getPoints() - loser.getPoints() >= 2) {
@@ -61,6 +56,11 @@ public class MatchScoreCalculationService {
             }
         } else if (winner.getPoints() == 4 && !tieBreak && !isMatchEnded) {
             winGame(match, winner, loser);
+        }
+
+        if (winner.getSets() == 3 || winner.getSets() - loser.getSets() >= 2) {
+            endMatch();
+            match.setWinner(winner.getPlayer());
         }
     }
 

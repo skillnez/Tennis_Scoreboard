@@ -1,5 +1,6 @@
 package com.skillnez.tennis_scoreboard.filter;
 
+import com.skillnez.tennis_scoreboard.exception.SamePlayersNameException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebFilter;
@@ -21,6 +22,9 @@ public class ErrorFilter extends HttpFilter {
         } catch (NotFoundException e) {
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             req.getRequestDispatcher("/index.jsp").forward(req, resp);
+        } catch (SamePlayersNameException | IllegalArgumentException e) {
+            req.setAttribute("errorMessage", e.getMessage());
+            req.getRequestDispatcher("/new-match.jsp").forward(req, resp);
         }
     }
 }

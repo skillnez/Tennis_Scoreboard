@@ -34,7 +34,7 @@
             <h1>Start new match</h1>
             <div class="new-match-image"></div>
             <div class="form-container center">
-                <form method="post" action="new-match">
+                <form method="post" action="${pageContext.request.contextPath}/new-match">
                     <c:if test="${not empty errorMessage}">
                     <p style="color: red;">${errorMessage}</p>
                     </c:if>

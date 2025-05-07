@@ -3,7 +3,11 @@ package com.skillnez.tennis_scoreboard.service;
 import com.skillnez.tennis_scoreboard.entity.Match;
 import com.skillnez.tennis_scoreboard.entity.PlayerScore;
 import jakarta.enterprise.context.ApplicationScoped;
+import lombok.Getter;
+import lombok.Setter;
 
+@Setter
+@Getter
 @ApplicationScoped
 public class MatchScoreCalculationService {
 
@@ -58,7 +62,7 @@ public class MatchScoreCalculationService {
             winGame(match, winner, loser);
         }
 
-        if (winner.getSets() == 3 || winner.getSets() - loser.getSets() >= 2) {
+        if (winner.getSets() == 2) {
             endMatch();
             match.setWinner(winner.getPlayer());
         }

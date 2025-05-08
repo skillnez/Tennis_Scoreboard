@@ -20,7 +20,7 @@ public class OngoingMatchService {
 
     private final ConcurrentHashMap<UUID, MatchScore> ongoingMatches = new ConcurrentHashMap<>();
 
-    public UUID createOngoingMatch (String player1, String player2) {
+    public UUID createOngoingMatch(String player1, String player2) {
         Player playerOne = playerPersistenceService.takeOrSavePlayer(player1);
         Player playerTwo = playerPersistenceService.takeOrSavePlayer(player2);
         PlayerScore playerOneScore = PlayerScore.builder()
@@ -44,7 +44,7 @@ public class OngoingMatchService {
         return uuid;
     }
 
-    public Match getOngoingMatch (UUID uuid) {
+    public Match getOngoingMatch(UUID uuid) {
         MatchScore matchScore = Optional.ofNullable(ongoingMatches.get(uuid))
                 .orElseThrow(() -> new NotFoundException("Матч с UUID " + uuid + " не найден"));
         return Match.builder()
@@ -54,18 +54,7 @@ public class OngoingMatchService {
                 .build();
     }
 
-    public void removeOngoingMatch (UUID uuid) {
+    public void removeOngoingMatch(UUID uuid) {
         ongoingMatches.remove(uuid);
-    }
-
-    public PlayerScore getPlayerScoreByPlayerId (int playerId, UUID uuid) {
-        MatchScore matchScore = ongoingMatches.get(uuid);
-        if (matchScore.getPlayerOneScore().getPlayer().getId().equals(playerId)) {
-            return matchScore.getPlayerOneScore();
-        }
-        if (matchScore.getPlayerTwoScore().getPlayer().getId().equals(playerId)) {
-            return matchScore.getPlayerTwoScore();
-        } else
-            throw new NotFoundException();
     }
 }

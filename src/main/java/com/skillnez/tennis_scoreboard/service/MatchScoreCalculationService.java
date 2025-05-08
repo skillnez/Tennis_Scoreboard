@@ -1,6 +1,7 @@
 package com.skillnez.tennis_scoreboard.service;
 
 import com.skillnez.tennis_scoreboard.entity.Match;
+import com.skillnez.tennis_scoreboard.entity.Player;
 import com.skillnez.tennis_scoreboard.entity.PlayerScore;
 import jakarta.enterprise.context.ApplicationScoped;
 import lombok.Getter;
@@ -13,6 +14,12 @@ public class MatchScoreCalculationService {
 
     private boolean tieBreak = false;
     private boolean isMatchEnded = false;
+
+    private final static int LOVE = 0;
+    private final static int FIFTEEN = 1;
+    private final static int THIRTY = 2;
+    private final static int FORTY = 3;
+    private final static int ADVANTAGE = 4;
 
     private boolean isWinner(PlayerScore playerScore, int playerId) {
         return playerScore.getPlayer().getId().equals(playerId);
@@ -97,16 +104,16 @@ public class MatchScoreCalculationService {
         playerTwoScore.setGames(0);
     }
 
-    public String formatPoints (PlayerScore playerScore) {
+    public String formatPoints(PlayerScore playerScore) {
         if (tieBreak) {
             return String.valueOf(playerScore.getPoints()); // просто число
         }
         return switch (playerScore.getPoints()) {
-            case 0 -> "0";
-            case 1 -> "15";
-            case 2 -> "30";
-            case 3 -> "40";
-            case 4 -> "AD";
+            case LOVE -> "0";
+            case FIFTEEN -> "15";
+            case THIRTY -> "30";
+            case FORTY -> "40";
+            case ADVANTAGE -> "AD";
             default -> "";
         };
     }

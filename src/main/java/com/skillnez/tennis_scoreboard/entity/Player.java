@@ -27,7 +27,7 @@ public class Player implements BaseEntity<Integer> {
     }
 
     @Override
-    public Integer getId(){
+    public Integer getId() {
         return this.id;
     }
 }

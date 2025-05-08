@@ -2,6 +2,7 @@ package com.skillnez.tennis_scoreboard.utils;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+
 import java.util.Properties;
 
 @ApplicationScoped

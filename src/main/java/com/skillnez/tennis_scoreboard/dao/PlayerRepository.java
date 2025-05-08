@@ -16,7 +16,7 @@ public class PlayerRepository extends BaseRepository <Integer, Player>{
     }
 
     public Optional<Player> getByName(String name) {
-        try(Session session = getSessionFactory().openSession()) {
+        try (Session session = getSessionFactory().openSession()) {
             return session.createQuery("select p from Player p where p.name = :name", Player.class)
                     .setParameter("name", name).uniqueResultOptional();
         } catch (NoResultException e) {

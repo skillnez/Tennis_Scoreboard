@@ -22,12 +22,12 @@ public class MatchRepository extends BaseRepository<Integer, Match> {
     }
 
     public long countFilteredMatches(String playerName) {
-            @Cleanup var session = getSessionFactory().openSession();
-            return session.createQuery("SELECT COUNT(m) FROM Match m " +
-                                       "WHERE LOWER(m.player1.name) like :playerName " +
-                                       "OR LOWER(m.player2.name) like :playerName", Long.class)
-                    .setParameter("playerName", "%" + playerName.toLowerCase() + "%")
-                    .getSingleResult();
+        @Cleanup var session = getSessionFactory().openSession();
+        return session.createQuery("SELECT COUNT(m) FROM Match m " +
+                        "WHERE LOWER(m.player1.name) like :playerName " +
+                        "OR LOWER(m.player2.name) like :playerName", Long.class)
+                .setParameter("playerName", "%" + playerName.toLowerCase() + "%")
+                .getSingleResult();
     }
 
     public List<Match> findPagedMatches(int pageNumber, int pageSize) {
@@ -45,9 +45,9 @@ public class MatchRepository extends BaseRepository<Integer, Match> {
 
         @Cleanup var session = getSessionFactory().openSession();
         return session.createQuery("SELECT m FROM Match m " +
-                                   "WHERE LOWER(m.player1.name) like :playerName " +
-                                   "OR LOWER(m.player2.name) like :playerName " +
-                                   "ORDER BY m.id DESC", Match.class)
+                        "WHERE LOWER(m.player1.name) like :playerName " +
+                        "OR LOWER(m.player2.name) like :playerName " +
+                        "ORDER BY m.id DESC", Match.class)
                 .setParameter("playerName", "%" + playerName.toLowerCase() + "%")
                 .setFirstResult(offset)
                 .setMaxResults(pageSize)

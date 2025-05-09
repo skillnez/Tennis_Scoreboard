@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component name="DiffGenerationConfig" isInitGenerateDdl="true">
-    <option name="initGenerateDdl" value="true" />
-    <option name="sourceModelValue" value="Tennis_Scoreboard:hibernate.cfg.xml" />
-    <option name="targetDbValue" value="af447e62-3ea0-4a7b-b0f5-59343945e010" />
-  </component>
-</project>
